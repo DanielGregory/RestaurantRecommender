@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dish-Specific Restaurant Recommender</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #0056b3; text-align: center; }
+        form { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .radio-group label { display: inline-block; margin-right: 20px; font-weight: normal; }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        .results-section { margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        img { max-width: 100%; height: auto; margin-top: 20px; border: 1px solid #ddd; }
+        .map-container {
+            height: 500px; /* Set a fixed height for the map */
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        .error-message { color: red; font-weight: bold; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dish-Specific Restaurant Recommender</h1>
+
+        <form method="POST" action="/" enctype="multipart/form-data">
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+
+            <label for="target_dish_text">Enter Dish Name:</label>
+            {# Dish input is always a text field now #}
+            <input type="text" id="target_dish_text" name="target_dish" placeholder="e.g., Pizza, Sushi, Tacos" value="{{ default_target_dish }}" required>
+            <br><br>
+
+            {# Removed: Dish list file upload input #}
+            {# Removed: Clear Uploaded List button #}
+            {# Removed: Dish list select dropdown #}
+            {# Removed: Info message about uploading list #}
+            {# Removed: JavaScript for handling file upload and toggling inputs #}
+        
+            <label for="min_mentions">Minimum Mentions (default: 5):</label>
+            <input type="number" id="min_mentions" name="min_mentions" value="{{ default_min_mentions }}" min="1">
+
+            <label for="min_reviews">Minimum Reviews with Dish (default: 2):</label>
+            <input type="number" id="min_reviews" name="min_reviews" value="{{ default_min_reviews }}" min="1">
+
+            <label for="num_display">Number of Restaurants to Display (max 500):</label>
+            <input type="number" id="num_display" name="num_display" value="{{ default_num_display }}" min="1" max="500">
+
+            <label>View Type:</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="view_type" value="list" {% if default_view_type == 'list' %}checked{% endif %}> List + Chart
+                </label>
+                <label>
+                    <input type="radio" name="view_type" value="map" {% if default_view_type == 'map' %}checked{% endif %}> Map
+                </label>
+            </div>
+            <br>
+            <button type="submit">Find Restaurants</button>
+        </form>
+
+        {% if recommendations %}
+            <div class="results-section">
+                <h2>Top Recommendations for "{{ default_target_dish.title() }}"</h2>
+                
+                {% if map_html %}
+                    <div class="map-container">
+                        {{ map_html | safe }}
+                    </div>
+                {% else %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Restaurant Name</th>
+                                <th>Weighted Score</th>
+                                <th>Mentions</th>
+                                <th>Reviews</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for restaurant in recommendations %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ restaurant.name }}</td>
+                                    <td>{{ "%.2f"|format(restaurant.score) }}</td>
+                                    <td>{{ restaurant.mentions }}</td>
+                                    <td>{{ restaurant.reviews }}</td>
+                                    <td>{{ restaurant.address }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if plot_url %}
+                        <img src="{{ plot_url }}" alt="Restaurant Recommendations Chart">
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% elif request.method == 'POST' %}
+            <p>No recommendations found for "{{ default_target_dish.title() }}" with the given filters.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
