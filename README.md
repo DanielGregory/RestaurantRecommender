@@ -1,4 +1,5 @@
 🍽 Restaurant Recommender
+
 A full-stack, data-driven web application that leverages Natural Language Processing (NLP) to deliver tailored restaurant recommendations using Yelp review data.
 
 Users can search for a specific dish or cuisine, and a custom scoring algorithm analyzes millions of reviews to rank restaurants based on sentiment and frequency of mentions.
@@ -28,6 +29,7 @@ Deployment	AWS EC2, Gunicorn, Nginx
 Dataset	Yelp Academic Dataset (Business + Review JSON)
 
 🚀 Installation & Setup
+
 1️⃣ Clone the repository
 
 bash
@@ -35,6 +37,7 @@ Copy
 Edit
 git clone https://github.com/DanielGregory/RestaurantRecommender.git
 cd RestaurantRecommender
+
 2️⃣ Create a virtual environment & install dependencies
 
 bash
@@ -43,11 +46,13 @@ Edit
 python -m venv venv
 source venv/bin/activate   # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
+
 3️⃣ Download Yelp Dataset
 
 Get yelp_academic_dataset_business.json and yelp_academic_dataset_review.json from the Yelp Dataset.
 
 Place them inside a /data folder in the project root.
+
 
 4️⃣ Run the application
 
