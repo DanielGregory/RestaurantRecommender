@@ -5,8 +5,7 @@ A full-stack, data-driven web application that leverages Natural Language Proces
 Users can search for a specific dish or cuisine, and a custom scoring algorithm analyzes millions of reviews to rank restaurants based on sentiment and frequency of mentions.
 
 📺 Demo
-🎥 Video Walkthrough: Watch Here
-(Replace with your YouTube video URL and thumbnail)
+🎥 Video Walkthrough: (https://youtu.be/OBftYsLB1Rs)
 
 ✨ Key Features
 🔍 Custom Recommender Algorithm – Weighted scoring model based on dish mentions, sentiment, and star ratings in Yelp reviews.
