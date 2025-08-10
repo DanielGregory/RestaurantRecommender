@@ -1,4 +1,5 @@
 🍽 Restaurant Recommender
+
 A full-stack, data-driven web application that leverages Natural Language Processing (NLP) to deliver tailored restaurant recommendations using Yelp review data.
 
 Users can search for a specific dish or cuisine, and a custom scoring algorithm analyzes millions of reviews to rank restaurants based on sentiment and frequency of mentions.
